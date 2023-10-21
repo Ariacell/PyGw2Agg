@@ -13,7 +13,12 @@ from pygw2agg.logic.main import aggregate_log_data
 from pygw2agg.settings_keys import INPUT_DIRECTORY_KEY
 
 from pygw2agg.ui.settings import get_settings_path, get_user_settings
-from pygw2agg.ui.table import AGGREGATE_TABLE_KEY
+from pygw2agg.ui.table import (
+    AGGREGATE_TABLE_KEY,
+    AGGREGATE_TABLE_PSG_KEYS,
+    AGGREGATE_TABLE_SUMMARY_KEY,
+    AGGREGATE_TABLE_SUMMARY_TAB_KEY,
+)
 from pygw2agg.ui.utils import (
     get_working_directory,
 )
@@ -57,9 +62,21 @@ def get_progress_info_button(current_operation: str, key, visible):
     return Text(current_operation, key=key, visible=visible)
 
 
+def toggle_table_display(window, visible):
+    for key in AGGREGATE_TABLE_PSG_KEYS:
+        window[key].update(visible=visible)
+    if visible == True:
+        window[AGGREGATE_TABLE_SUMMARY_TAB_KEY].select()
+
+
+def reset_table_values(window):
+    window[AGGREGATE_TABLE_SUMMARY_KEY].update(values=[])
+
+
 def handle_parse_event(window: Window, event, values):
     try:
-        window[AGGREGATE_TABLE_KEY].update(visible=False)
+        toggle_table_display(window, False)
+        reset_table_values(window)
         window[PARSING_IN_PROGRESS_KEY].update(visible=True)
         window.refresh()
         settings = get_user_settings(get_settings_path())
@@ -75,22 +92,19 @@ def handle_parse_event(window: Window, event, values):
     try:
         window[AGGREGATING_IN_PROGRESS_KEY].update(visible=True)
         window.refresh()
+
         validated_json_data = load_json(json_log_paths)
         aggregated_data = aggregate_log_data(validated_json_data)
         data = [[playername, 10] for playername in aggregated_data]
-        # data = [
-        #     ["Jason", 31, 15, "A"],
-        #     ["John", 92, 16, "B"],
-        #     ["Ann", 77, 17, "C"],
-        #     ["Charlie", 18, 17, "D"],
-        #     ["Sarah", 55, 14, "A"],
-        # ]
-        window[AGGREGATE_TABLE_KEY].update(visible=True, values=data)
+
+        window[AGGREGATE_TABLE_SUMMARY_KEY].update(values=data)
+        toggle_table_display(window, True)
         return data
     except Exception as e:
         popup_error_with_traceback(f"Error while attempting to aggregate logs: {e}")
     finally:
         window[AGGREGATING_IN_PROGRESS_KEY].update(visible=False)
         window.refresh()
+
     # C:/Users/Aria/Desktop/Gw2/dev/GW2EI_Release/GuildWars2EliteInsights.exe
     # C:\Users\Aria\Desktop\Gw2\Logs\2023_05_14_DadLossLATE_Thief_15s

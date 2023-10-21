@@ -21,26 +21,63 @@ def sort_table(table, col_clicked):
 
 # ------ Window Layout ------
 AGGREGATE_TABLE_KEY = "-AGGREGATE_TABLE-"
+AGGREGATE_TABLE_SUMMARY_TAB_KEY = "-AGGREGATE_TABLE_TAB-SUMMARY"
+AGGREGATE_TABLE_SUMMARY_KEY = "-AGGREGATE_TABLE-SUMMARY"
+AGGREGATE_TABLE_DEFENSE_TAB_KEY = "-AGGREGATE_TABLE_TAB-DEFENSE"
+AGGREGATE_TABLE_DEFENSE_KEY = "-AGGREGATE_TABLE-DEFENSE"
+
+AGGREGATE_TABLE_PSG_KEYS = [
+    AGGREGATE_TABLE_KEY,
+    AGGREGATE_TABLE_SUMMARY_TAB_KEY,
+    AGGREGATE_TABLE_SUMMARY_KEY,
+    AGGREGATE_TABLE_DEFENSE_TAB_KEY,
+    AGGREGATE_TABLE_DEFENSE_KEY,
+]
 
 
 def get_table(data, headings, visible):
     return (
-        sg.Table(
-            values=data,
-            headings=headings,
-            max_col_width=50,
-            auto_size_columns=True,
-            display_row_numbers=True,
-            justification="right",
-            num_rows=20,
-            alternating_row_color="lightyellow",
+        sg.TabGroup(
+            [
+                [
+                    sg.Tab(
+                        "Basic Info",
+                        [
+                            [
+                                sg.Table(
+                                    values=data,
+                                    headings=headings,
+                                    max_col_width=50,
+                                    auto_size_columns=True,
+                                    display_row_numbers=True,
+                                    justification="right",
+                                    num_rows=20,
+                                    expand_x=True,
+                                    expand_y=True,
+                                    alternating_row_color="lightyellow",
+                                    key=AGGREGATE_TABLE_SUMMARY_KEY,
+                                    enable_events=True,
+                                    enable_click_events=True,  # Comment out to not enable header and other clicks
+                                    tooltip="This is a table",
+                                    visible=visible,
+                                )
+                            ]
+                        ],
+                        visible=visible,
+                        key=AGGREGATE_TABLE_SUMMARY_TAB_KEY,
+                    ),
+                    sg.Tab(
+                        "Defense",
+                        [[sg.Text("test", key=AGGREGATE_TABLE_DEFENSE_KEY)]],
+                        visible=visible,
+                        key=AGGREGATE_TABLE_DEFENSE_TAB_KEY,
+                    ),
+                ]
+            ],
             key=AGGREGATE_TABLE_KEY,
-            enable_events=True,
+            visible=visible,
             expand_x=True,
             expand_y=True,
-            enable_click_events=True,  # Comment out to not enable header and other clicks
-            tooltip="This is a table",
-            visible=visible,
         ),
     )
 

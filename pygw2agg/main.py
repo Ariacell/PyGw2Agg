@@ -11,7 +11,11 @@ from pygw2agg.ui.settings import (
     handle_file_menu_event,
 )
 
-from pygw2agg.ui.table import AGGREGATE_TABLE_KEY, handle_table_event
+from pygw2agg.ui.table import (
+    AGGREGATE_TABLE_KEY,
+    AGGREGATE_TABLE_SUMMARY_TAB_KEY,
+    handle_table_event,
+)
 
 # ------ Create Window ------
 window = sg.Window(
@@ -21,7 +25,10 @@ window = sg.Window(
     ttk_theme="classic",
     resizable=True,
     size=(1200, 800),
+    finalize=True,
 )
+# Manually hide first tab after window initialisation, see https://github.com/PySimpleGUI/PySimpleGUI/issues/5837
+window[AGGREGATE_TABLE_SUMMARY_TAB_KEY].update(visible=False)
 
 logger = structlog.get_logger("main")
 
