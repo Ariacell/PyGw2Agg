@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import List
 from pydantic import BaseModel
 from pygw2agg.models.ei_output.base_ei_model import BaseEiJsonModel
@@ -16,7 +17,7 @@ from pygw2agg.models.ei_output.player_support_stats import PlayerSupportStats
 class Player(BaseEiJsonModel):
     account: str
     name: str
-    # activeTimes: [int]
+    activeTimes: [Decimal]
     # group: int
     hasCommanderTag: bool
     # profession: PlayerProfessions
@@ -31,6 +32,6 @@ class Player(BaseEiJsonModel):
     ]  # Dps to targets is a nested array of damage per target, per phase
     defenses: List[PlayerDefensesStats]
     statsAll: List[PlayerMiscStats]
-    buffUptimes: List[PlayerBuffUptimeStats]
-    groupBuffs: List[PlayerBuffGenerationStats]
-    squadBuffs: List[PlayerBuffGenerationStats]
+    # buffUptimes: List[PlayerBuffUptimeStats]
+    # groupBuffs: List[PlayerBuffGenerationStats]
+    # squadBuffs: List[PlayerBuffGenerationStats]

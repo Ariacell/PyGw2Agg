@@ -9,6 +9,7 @@ from PySimpleGUI import (
 import structlog
 from pygw2agg.io.load_json import load_json
 from pygw2agg.io.parse import parse_zevtc_logs_to_json
+from pygw2agg.logic.main import aggregate_log_data
 from pygw2agg.settings_keys import INPUT_DIRECTORY_KEY
 
 from pygw2agg.ui.settings import get_settings_path, get_user_settings
@@ -18,7 +19,6 @@ from pygw2agg.ui.utils import (
 )
 
 logger = structlog.get_logger("user_bar")
-
 
 
 INPUT_DIRECTORY_TOOLTIP = "The fully qualified path to your input directory containing .zevtc files to parse and aggregate"
@@ -75,15 +75,16 @@ def handle_parse_event(window: Window, event, values):
     try:
         window[AGGREGATING_IN_PROGRESS_KEY].update(visible=True)
         window.refresh()
-        load_json(json_log_paths)
-
-        data = [
-            ["Jason", 31, 15, "A"],
-            ["John", 92, 16, "B"],
-            ["Ann", 77, 17, "C"],
-            ["Charlie", 18, 17, "D"],
-            ["Sarah", 55, 14, "A"],
-        ]
+        validated_json_data = load_json(json_log_paths)
+        aggregated_data = aggregate_log_data(validated_json_data)
+        data = [[playername, 10] for playername in aggregated_data]
+        # data = [
+        #     ["Jason", 31, 15, "A"],
+        #     ["John", 92, 16, "B"],
+        #     ["Ann", 77, 17, "C"],
+        #     ["Charlie", 18, 17, "D"],
+        #     ["Sarah", 55, 14, "A"],
+        # ]
         window[AGGREGATE_TABLE_KEY].update(visible=True, values=data)
         return data
     except Exception as e:

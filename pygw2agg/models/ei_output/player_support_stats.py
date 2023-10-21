@@ -1,12 +1,13 @@
+from decimal import Decimal
 from pydantic import BaseModel
 
 
 class PlayerSupportStats(BaseModel):
     resurrects: int
-    resurrectTime: int
+    resurrectTime: Decimal
     condiCleanse: int
-    condiCleanseTime: int
+    condiCleanseTime: Decimal
     condiCleanseSelf: int
-    condiCleanseTimeSelf: int
+    condiCleanseTimeSelf: Decimal
     boonStrips: int
-    boonStripsTime: int
+    boonStripsTime: Decimal

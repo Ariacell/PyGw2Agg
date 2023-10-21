@@ -3,7 +3,7 @@ import PySimpleGUI as sg
 import os
 from PySimpleGUI import Text, InputText, FolderBrowse, FileBrowse
 import structlog
-from pygw2agg.settings_keys import EI_EXEC_PATH_KEY
+from pygw2agg.settings_keys import EI_EXEC_PATH_KEY, OUTPUT_DIRECTORY_KEY
 
 from pygw2agg.ui.utils import get_working_directory
 

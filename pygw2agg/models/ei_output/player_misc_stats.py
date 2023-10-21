@@ -1,30 +1,31 @@
+from decimal import Decimal
 from pydantic import BaseModel
 
 
 class PlayerMiscStats(BaseModel):
-    wasted: int
-    timeWasted: int
-    saved: int
-    timeSaved: int
-    stackDist: int
-    distToCom: int
-    avgBoons: int
-    avgActiveBoons: int
-    avgConditions: int
-    avgActiveConditions: int
-    swapCount: int
-    totalDamageCount: int
-    directDamageCount: int
-    connectedDirectDamageCount: int
-    connectedDamageCount: int
-    downContribution: int
-    critableDirectDamageCount: int
-    criticalRate: int
-    criticalDmg: int
-    flankingRate: int
-    againstMovingRate: int
-    glanceRate: int
-    missed: int
+    wasted: Decimal
+    timeWasted: Decimal
+    saved: Decimal
+    timeSaved: Decimal
+    stackDist: Decimal
+    distToCom: Decimal
+    avgBoons: Decimal
+    avgActiveBoons: Decimal
+    avgConditions: Decimal
+    avgActiveConditions: Decimal
+    swapCount: Decimal
+    totalDamageCount: Decimal
+    directDamageCount: Decimal
+    connectedDirectDamageCount: Decimal
+    connectedDamageCount: Decimal
+    downContribution: Decimal
+    critableDirectDamageCount: Decimal
+    criticalRate: Decimal
+    criticalDmg: Decimal
+    flankingRate: Decimal
+    againstMovingRate: Decimal
+    glanceRate: Decimal
+    missed: Decimal
     evaded: int
     blocked: int
     interrupts: int
