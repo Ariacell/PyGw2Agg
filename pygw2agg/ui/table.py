@@ -23,12 +23,12 @@ def sort_table(table, col_clicked):
 AGGREGATE_TABLE_KEY = "-AGGREGATE_TABLE-"
 
 
-def get_table(data, headings):
+def get_table(data, headings, visible):
     return (
         sg.Table(
             values=data,
             headings=headings,
-            max_col_width=25,
+            max_col_width=50,
             auto_size_columns=True,
             display_row_numbers=True,
             justification="right",
@@ -40,6 +40,7 @@ def get_table(data, headings):
             expand_y=True,
             enable_click_events=True,  # Comment out to not enable header and other clicks
             tooltip="This is a table",
+            visible=visible,
         ),
     )
 

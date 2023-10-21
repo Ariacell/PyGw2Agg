@@ -1,7 +1,11 @@
 import PySimpleGUI as sg
 import structlog
 from pygw2agg.ui.layout import get_layout
-from pygw2agg.ui.parsing import handle_parse_event
+from pygw2agg.ui.parsing import (
+    INPUT_DIRECTORY_KEY,
+    handle_input_path_event,
+    handle_parse_event,
+)
 from pygw2agg.ui.settings import (
     get_user_settings,
     handle_file_menu_event,
@@ -44,6 +48,8 @@ def display_table():
             if event == "-PARSE_BUTTON-":
                 AGGREGATE_DATA = handle_parse_event(window, event, values)
                 logger.debug(f"Aggregated data: {AGGREGATE_DATA}")
+            if event == INPUT_DIRECTORY_KEY:
+                handle_input_path_event(window, event, values)
             if event == "Settings":
                 handle_file_menu_event(event, values)
     window.close()

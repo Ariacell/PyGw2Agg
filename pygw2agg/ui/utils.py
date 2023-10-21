@@ -1,4 +1,8 @@
+import os
 from PySimpleGUI import Window
+import structlog
+
+logger = structlog.get_logger("UI_utils")
 
 
 def simple_extend_element(window: Window, element):
@@ -10,5 +14,12 @@ def simple_extend_element(window: Window, element):
 
 
 def remove_element(window: Window, key: str):
-    window[key].update(visible=False)
-    window[key].Widget.master.pack_forget()
+    try:
+        if window.find_element(key):
+            window[key].update(visible=False)
+    except:
+        logger.warn("Swallowed error related to removing element")
+
+
+def get_working_directory():
+    os.getcwd()
