@@ -25,6 +25,7 @@ logger = structlog.get_logger("main")
 # ------ Event Loop ------
 def display_table():
     settings = get_user_settings()
+    AGGREGATE_DATA = None
     logger.info(f"Instantiated application with settings: {settings}")
     while True:
         event, values = window.read(timeout=1000)
@@ -38,10 +39,11 @@ def display_table():
                 # event[2][0] is the row
                 # event[2][1] is the colum
                 # If sure makes sure it's the statement and not the first column
-                handle_table_event(event, window=window, data=data)
+                handle_table_event(event, window=window, data=AGGREGATE_DATA)
         if isinstance(event, str):
             if event == "-PARSE_BUTTON-":
-                handle_parse_event(window, event, values)
+                AGGREGATE_DATA = handle_parse_event(window, event, values)
+                logger.debug(f"Aggregated data: {AGGREGATE_DATA}")
             if event == "Settings":
                 handle_file_menu_event(event, values)
     window.close()

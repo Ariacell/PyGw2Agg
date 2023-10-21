@@ -63,6 +63,7 @@ def handle_parse_event(window: Window, event, values):
         ]
 
         window.extend_layout(window["-MAIN_COL-"], [get_table(data, headings)])
+        return data
     except Exception as e:
         popup_error_with_traceback(f"Error while attempting to parse logs: {e}")
     finally:
