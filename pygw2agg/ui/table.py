@@ -1,9 +1,6 @@
 import PySimpleGUI as sg
-import random
-import string
 import operator
 
-from pygw2agg.ui.menu_bar import get_menu_bar
 
 # Use a 2D Array
 sg.theme("Light green 6")
@@ -23,6 +20,9 @@ def sort_table(table, col_clicked):
 
 
 # ------ Window Layout ------
+AGGREGATE_TABLE_KEY = "-AGGREGATE_TABLE-"
+
+
 def get_table(data, headings):
     return (
         sg.Table(
@@ -34,7 +34,7 @@ def get_table(data, headings):
             justification="right",
             num_rows=20,
             alternating_row_color="lightyellow",
-            key="-TABLE-",
+            key=AGGREGATE_TABLE_KEY,
             enable_events=True,
             expand_x=True,
             expand_y=True,
@@ -50,4 +50,5 @@ def handle_table_event(event, window, data):
     ):  # Header was clicked and wasn't the "row" column
         col_num_clicked = event[2][1]
         new_table = sort_table(data, col_num_clicked)
-        window["-TABLE-"].update(new_table)
+        print(new_table)
+        window[AGGREGATE_TABLE_KEY].update(new_table)
