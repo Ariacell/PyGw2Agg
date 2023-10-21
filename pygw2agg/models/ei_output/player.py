@@ -17,14 +17,14 @@ from pygw2agg.models.ei_output.player_support_stats import PlayerSupportStats
 class Player(BaseEiJsonModel):
     account: str
     name: str
-    activeTimes: [Decimal]
-    # group: int
+    activeTimes: List[Decimal]
+    group: int
     hasCommanderTag: bool
     # profession: PlayerProfessions
     friendlyNPC: bool
     notInSquad: bool
     guildID: str
-    weapons: [object]
+    weapons: List[object]
     support: List[PlayerSupportStats]
     dpsAll: List[PlayerDpsAllStats]
     dpsTargets: List[
