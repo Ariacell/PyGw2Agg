@@ -1,8 +1,8 @@
 import PySimpleGUI as sg
 import structlog
+from pygw2agg.settings_keys import INPUT_DIRECTORY_KEY
 from pygw2agg.ui.layout import get_layout
 from pygw2agg.ui.parsing import (
-    INPUT_DIRECTORY_KEY,
     handle_input_path_event,
     handle_parse_event,
 )
@@ -32,7 +32,7 @@ def display_table():
     AGGREGATE_DATA = None
     logger.info(f"Instantiated application with settings: {settings}")
     while True:
-        event, values = window.read(timeout=1000)
+        event, values = window.read()
         print(event, values)
         if event == sg.WIN_CLOSED:
             break

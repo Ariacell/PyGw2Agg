@@ -1,6 +1,3 @@
-import os
-import subprocess
-import time
 from PySimpleGUI import (
     Button,
     popup_error_with_traceback,
@@ -10,20 +7,20 @@ from PySimpleGUI import (
     FolderBrowse,
 )
 import structlog
+from pygw2agg.io.load_json import load_json
 from pygw2agg.io.parse import parse_zevtc_logs_to_json
+from pygw2agg.settings_keys import INPUT_DIRECTORY_KEY
 
 from pygw2agg.ui.settings import get_settings_path, get_user_settings
-from pygw2agg.ui.table import AGGREGATE_TABLE_KEY, get_table
+from pygw2agg.ui.table import AGGREGATE_TABLE_KEY
 from pygw2agg.ui.utils import (
     get_working_directory,
-    remove_element,
-    simple_extend_element,
 )
 
 logger = structlog.get_logger("user_bar")
 
 
-INPUT_DIRECTORY_KEY = "-INPUT_PATH-"
+
 INPUT_DIRECTORY_TOOLTIP = "The fully qualified path to your input directory containing .zevtc files to parse and aggregate"
 
 
@@ -68,12 +65,7 @@ def handle_parse_event(window: Window, event, values):
         settings = get_user_settings(get_settings_path())
         logger.debug(f"Using settings: {settings}")
 
-        exec_path = settings.get("-EI_EXEC_PATH-")
-        input_path = settings.get("-INPUT_PATH-")
-        output_path = settings.get("-OUTPUT_PATH-")
-        parse_zevtc_logs_to_json(
-            exec_path=exec_path, input_path=input_path, output_path=output_path
-        )
+        json_log_paths = parse_zevtc_logs_to_json(settings)
     except Exception as e:
         popup_error_with_traceback(f"Error while attempting to parse logs: {e}")
     finally:
@@ -83,7 +75,7 @@ def handle_parse_event(window: Window, event, values):
     try:
         window[AGGREGATING_IN_PROGRESS_KEY].update(visible=True)
         window.refresh()
-        time.sleep(5)
+        load_json(json_log_paths)
 
         data = [
             ["Jason", 31, 15, "A"],
@@ -95,7 +87,7 @@ def handle_parse_event(window: Window, event, values):
         window[AGGREGATE_TABLE_KEY].update(visible=True, values=data)
         return data
     except Exception as e:
-        popup_error_with_traceback(f"Error while attempting to parse logs: {e}")
+        popup_error_with_traceback(f"Error while attempting to aggregate logs: {e}")
     finally:
         window[AGGREGATING_IN_PROGRESS_KEY].update(visible=False)
         window.refresh()

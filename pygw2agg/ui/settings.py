@@ -3,6 +3,7 @@ import PySimpleGUI as sg
 import os
 from PySimpleGUI import Text, InputText, FolderBrowse, FileBrowse
 import structlog
+from pygw2agg.settings_keys import EI_EXEC_PATH_KEY
 
 from pygw2agg.ui.utils import get_working_directory
 
@@ -34,7 +35,6 @@ def handle_file_menu_event(event, values):
         open_settings()
 
 
-EI_EXEC_PATH_KEY = "-EI_EXEC_PATH-"
 EI_EXEC_PATH_TOOLTIP = "The fully qualified path to your executable Elite Insights exe, e.g. C://Users/Documents/GuildWars2EliteInsights.exe"
 
 
@@ -59,7 +59,6 @@ def get_EI_exec_path_layout():
     ]
 
 
-OUTPUT_DIRECTORY_KEY = "-OUTPUT_PATH-"
 OUTPUT_DIRECTORY_TOOLTIP = "If you would like to save output to a custom directory update this setting. Defaults to input directory."
 
 

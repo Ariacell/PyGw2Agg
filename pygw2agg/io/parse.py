@@ -1,6 +1,12 @@
 import os
 import subprocess
 import structlog
+from PySimpleGUI import UserSettings
+from pygw2agg.settings_keys import (
+    INPUT_DIRECTORY_KEY,
+    EI_EXEC_PATH_KEY,
+    OUTPUT_DIRECTORY_KEY,
+)
 
 
 logger = structlog.get_logger("io_parsing")
@@ -16,7 +22,20 @@ def get_logs_from_directory(input_directory):
     return res
 
 
-def parse_zevtc_logs_to_json(exec_path: str, input_path: str, output_path: str | None):
+def get_json_paths(output_directory):
+    res = []
+    # Iterate directory
+    for file in os.listdir(output_directory):
+        # check only text files
+        if file.endswith(".json"):
+            res.append(f"{output_directory}\{file}")
+    return res
+
+
+def parse_zevtc_logs_to_json(settings: UserSettings):
+    exec_path = settings.get(EI_EXEC_PATH_KEY)
+    input_path = settings.get(INPUT_DIRECTORY_KEY)
+    output_path = settings.get(OUTPUT_DIRECTORY_KEY)
     if not exec_path or not input_path:
         missing_settings_warning_msg = (
             "Missing exec or input path, are your settings updated?"
@@ -43,3 +62,4 @@ def parse_zevtc_logs_to_json(exec_path: str, input_path: str, output_path: str |
         capture_output=True,
     )
     logger.info("Parsing completed")
+    return get_json_paths(output_directory=output_path)
