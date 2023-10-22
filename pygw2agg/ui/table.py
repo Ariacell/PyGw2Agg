@@ -35,8 +35,12 @@ AGGREGATE_TABLE_PSG_KEYS = [
 ]
 
 COMMON_HEADINGS = ["Name", "Account", "Profession"]
-AGGREGATE_TABLE_SUMMARY_HEADINGS = COMMON_HEADINGS + ["Ressurects"]
-AGGREGATE_TABLE_DEFENSE_HEADINGS = COMMON_HEADINGS + ["Resurrect Time"]
+
+
+AGGREGATE_TABLE_SUMMARY_HEADINGS = ["Ressurects"]
+MERGED_AGGREGATE_TABLE_SUMMARY_HEADINGS = COMMON_HEADINGS + ["Ressurects"]
+AGGREGATE_TABLE_DEFENSE_HEADINGS = ["Resurrect Time"]
+MERGED_AGGREGATE_TABLE_DEFENSE_HEADINGS = COMMON_HEADINGS + ["Resurrect Time"]
 
 
 def get_table(data, visible):
@@ -50,7 +54,7 @@ def get_table(data, visible):
                             [
                                 sg.Table(
                                     values=data,
-                                    headings=AGGREGATE_TABLE_SUMMARY_HEADINGS,
+                                    headings=MERGED_AGGREGATE_TABLE_SUMMARY_HEADINGS,
                                     max_col_width=50,
                                     auto_size_columns=True,
                                     display_row_numbers=True,
@@ -77,7 +81,7 @@ def get_table(data, visible):
                             [
                                 sg.Table(
                                     values=data,
-                                    headings=AGGREGATE_TABLE_DEFENSE_HEADINGS,
+                                    headings=MERGED_AGGREGATE_TABLE_DEFENSE_HEADINGS,
                                     max_col_width=50,
                                     auto_size_columns=True,
                                     display_row_numbers=True,

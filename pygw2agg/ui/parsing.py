@@ -11,9 +11,11 @@ from pygw2agg.io.load_json import load_json
 from pygw2agg.io.parse import parse_zevtc_logs_to_json
 from pygw2agg.logic.main import aggregate_log_data
 from pygw2agg.settings_keys import INPUT_DIRECTORY_KEY
+from pygw2agg.ui.mapping import map_aggregated_data_to_table_structure
 
 from pygw2agg.ui.settings import get_settings_path, get_user_settings
 from pygw2agg.ui.table import (
+    AGGREGATE_TABLE_DEFENSE_KEY,
     AGGREGATE_TABLE_KEY,
     AGGREGATE_TABLE_PSG_KEYS,
     AGGREGATE_TABLE_SUMMARY_KEY,
@@ -96,12 +98,10 @@ def handle_parse_event(window: Window, event, values):
         validated_json_data = load_json(json_log_paths)
         aggregated_data = aggregate_log_data(validated_json_data)
         # Table data should have it's own tranformation in logic/model module, aggregation is a logic step, mapping to ui representation is a domain model responsibility imo.
-        data = [
-            [player.name, player.account, player.profession.value]
-            for player in aggregated_data
-        ]
-
-        window[AGGREGATE_TABLE_SUMMARY_KEY].update(values=data)
+        data = map_aggregated_data_to_table_structure(aggregated_data=aggregated_data)
+        logger.debug(f"Mapped aggregated data to table structure: {data}")
+        window[AGGREGATE_TABLE_SUMMARY_KEY].update(values=data.summary)
+        window[AGGREGATE_TABLE_DEFENSE_KEY].update(values=data.defense)
         toggle_table_display(window, True)
         return data
     except Exception as e:
