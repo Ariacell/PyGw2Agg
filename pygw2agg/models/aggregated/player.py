@@ -9,3 +9,9 @@ class AggregatedPlayer(BaseAggregatedModel):
     account: str
     profession: ProfessionEnum
     stats: List[AggregatedPlayerStat]
+
+    def get_stat_by_key(
+        self,
+        key: str,
+    ):
+        return next(stat for stat in self.stats if stat.key == key)

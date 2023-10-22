@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from pygw2agg.models.domain.individual_player_log import IndividualPlayerLogData
 from pygw2agg.models.ei_output.base_ei_model import BaseEiJsonModel
 
-from pygw2agg.models.ei_output.player import Player, get_stub_player_stats
+from pygw2agg.models.ei_output.player import Player, get_stub_player
 
 
 class LogData(BaseEiJsonModel):
@@ -26,10 +26,10 @@ def to_individual_player_log_data(player_name: str):
 
 
 def get_stub_log(
-    duration="sometime",
+    duration="00m 33s 966ms",
     recordedBy="someone",
     timeStart="yesterday",
-    players=[get_stub_player_stats()],
+    players=[get_stub_player()],
 ):
     return LogData(
         duration=duration,

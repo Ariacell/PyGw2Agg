@@ -12,3 +12,21 @@ def sum_ressurects(player_support_stats: List[PlayerSupportStats]):
         key="total_ressurects",
         tags=["summary, support"],
     )
+
+
+def sum_cleanses(player_support_stats: List[PlayerSupportStats]):
+    return AggregatedPlayerStat(
+        value=sum([stat.condiCleanse for stat in player_support_stats]),
+        friendly_name="Cleanses",
+        key="total_cleanses",
+        tags=["summary, support"],
+    )
+
+
+def sum_cleanses(player_support_stats: List[PlayerSupportStats]):
+    return AggregatedPlayerStat(
+        value=sum([stat.condiCleanse for stat in player_support_stats]),
+        friendly_name="Cleanses",
+        key="total_cleanses",
+        tags=["summary, support"],
+    )

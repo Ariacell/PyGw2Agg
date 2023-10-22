@@ -53,10 +53,11 @@ class Player(BaseEiJsonModel):
     # squadBuffs: List[PlayerBuffGenerationStats]
 
 
-def get_stub_player_stats(
+def get_stub_player(
     name="someone",
     account="someone.1234",
     profession=ProfessionEnum.elementalist.value,
+    active_times=[12345, 4312],
     support_stats=[get_stub_player_support_stats()],
     dps_all_stats=[get_stub_player_dps_all_stats()],
     dps_target_stats=[[get_stub_player_dps_target_stats()]],
@@ -66,7 +67,7 @@ def get_stub_player_stats(
     return Player(
         account=account,
         name=name,
-        activeTimes=[1.0, 5.0],
+        activeTimes=active_times,
         group=1,
         hasCommanderTag=False,
         profession=profession,

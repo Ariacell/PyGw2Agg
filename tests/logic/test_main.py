@@ -3,7 +3,7 @@ from pygw2agg.logic.main import (
     get_unique_players_for_log_set,
 )
 from pygw2agg.models.ei_output.log_data import LogData
-from pygw2agg.models.ei_output.player import Player, get_stub_player_stats
+from pygw2agg.models.ei_output.player import Player, get_stub_player
 
 
 class TestLogSorting:
@@ -12,8 +12,8 @@ class TestLogSorting:
         recordedBy="someone",
         timeStart="yesterday",
         players=[
-            get_stub_player_stats(name="billy"),
-            get_stub_player_stats(name="jean"),
+            get_stub_player(name="billy"),
+            get_stub_player(name="jean"),
         ],
     )
 
@@ -21,7 +21,7 @@ class TestLogSorting:
         duration="sometime",
         recordedBy="someone",
         timeStart="yesterday",
-        players=[get_stub_player_stats("jean")],
+        players=[get_stub_player("jean")],
     )
 
     def get_sample_validated_logs(self):
