@@ -2,7 +2,7 @@
 
 ## Summary
 
-A tool primarily design for GvG log aggregation to help in reviewing relatively homogenous data from a single session of play. PvE and multi-scrim data is not explicitly supported, but will likely function fairly well so long as the input data is of relatively high quality (low number of player swaps, all same instance and patch). See here for a previous project in the same vein [[LINK TO TS PROJECT]]. This project is trying to find a more appropriate user fit by not attempting to target online functionality, and instead prioritising compatibility and ease of distribution.
+A tool primarily design for GvG log aggregation to help in reviewing relatively homogenous data from a single session of play. PvE and multi-scrim data is not explicitly supported, but will likely function fairly well so long as the input data is of relatively high quality (low number of player swaps, all same instance and patch). See here for a previous project in the same vein. This project is trying to find a more appropriate user fit by not attempting to target online functionality, and instead prioritising compatibility and ease of distribution.
 
 ## How to use
 
