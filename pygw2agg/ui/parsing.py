@@ -95,7 +95,11 @@ def handle_parse_event(window: Window, event, values):
 
         validated_json_data = load_json(json_log_paths)
         aggregated_data = aggregate_log_data(validated_json_data)
-        data = [[playername, 10] for playername in aggregated_data]
+        # Table data should have it's own tranformation in logic/model module, aggregation is a logic step, mapping to ui representation is a domain model responsibility imo.
+        data = [
+            [player.name, player.account, player.profession.value]
+            for player in aggregated_data
+        ]
 
         window[AGGREGATE_TABLE_SUMMARY_KEY].update(values=data)
         toggle_table_display(window, True)

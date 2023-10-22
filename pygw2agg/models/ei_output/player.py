@@ -55,6 +55,8 @@ class Player(BaseEiJsonModel):
 
 def get_stub_player_stats(
     name="someone",
+    account="someone.1234",
+    profession=ProfessionEnum.elementalist.value,
     support_stats=[get_stub_player_support_stats()],
     dps_all_stats=[get_stub_player_dps_all_stats()],
     dps_target_stats=[[get_stub_player_dps_target_stats()]],
@@ -62,12 +64,12 @@ def get_stub_player_stats(
     misc_stats=[get_stub_player_misc_stats()],
 ):
     return Player(
-        account="name.1234",
+        account=account,
         name=name,
         activeTimes=[1.0, 5.0],
         group=1,
         hasCommanderTag=False,
-        profession="elementalist",
+        profession=profession,
         friendlyNPC=False,
         notInSquad=False,
         guildID="432",

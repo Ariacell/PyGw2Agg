@@ -8,4 +8,4 @@ class AggregatedPlayer(BaseAggregatedModel):
     name: str
     account: str
     profession: ProfessionEnum
-    # stats: List[AggregatedPlayerStat]
+    stats: List[AggregatedPlayerStat]

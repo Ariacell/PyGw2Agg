@@ -9,8 +9,6 @@ from pygw2agg.ui.parsing import (
 from pygw2agg.ui.table import get_table
 from PySimpleGUI import Col, VerticalSeparator, Text, pin
 
-headings = ["Name", "Class Mark", "Age", "Homeroom Class"]
-
 
 def get_layout():
     return [
@@ -34,7 +32,7 @@ def get_layout():
                                 visible=False,
                             )
                         ],
-                        get_table([], headings=headings, visible=False),
+                        get_table([], visible=False),
                     ],
                     key="-MAIN_COL-",
                     expand_x=True,

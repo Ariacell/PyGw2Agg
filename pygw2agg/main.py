@@ -13,6 +13,7 @@ from pygw2agg.ui.settings import (
 
 from pygw2agg.ui.table import (
     AGGREGATE_TABLE_KEY,
+    AGGREGATE_TABLE_SUMMARY_KEY,
     AGGREGATE_TABLE_SUMMARY_TAB_KEY,
     handle_table_event,
 )
@@ -46,7 +47,7 @@ def display_table():
         # If there's an event with a tuple, which can only a table will generate
         if isinstance(event, tuple):
             # TABLE CLICKED Event has value in format ('-TABLE=', '+CLICKED+', (row,col))
-            if event[0] == AGGREGATE_TABLE_KEY:
+            if event[0] == AGGREGATE_TABLE_SUMMARY_KEY:
                 # event[2][0] is the row
                 # event[2][1] is the colum
                 # If sure makes sure it's the statement and not the first column

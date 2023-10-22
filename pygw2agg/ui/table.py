@@ -34,8 +34,12 @@ AGGREGATE_TABLE_PSG_KEYS = [
     AGGREGATE_TABLE_DEFENSE_KEY,
 ]
 
+COMMON_HEADINGS = ["Name", "Account", "Profession"]
+AGGREGATE_TABLE_SUMMARY_HEADINGS = COMMON_HEADINGS + ["Ressurects"]
+AGGREGATE_TABLE_DEFENSE_HEADINGS = COMMON_HEADINGS + ["Resurrect Time"]
 
-def get_table(data, headings, visible):
+
+def get_table(data, visible):
     return (
         sg.TabGroup(
             [
@@ -46,7 +50,7 @@ def get_table(data, headings, visible):
                             [
                                 sg.Table(
                                     values=data,
-                                    headings=headings,
+                                    headings=AGGREGATE_TABLE_SUMMARY_HEADINGS,
                                     max_col_width=50,
                                     auto_size_columns=True,
                                     display_row_numbers=True,
@@ -58,8 +62,9 @@ def get_table(data, headings, visible):
                                     key=AGGREGATE_TABLE_SUMMARY_KEY,
                                     enable_events=True,
                                     enable_click_events=True,  # Comment out to not enable header and other clicks
-                                    tooltip="This is a table",
+                                    tooltip="Main summary table with general information",
                                     visible=visible,
+                                    vertical_scroll_only=False,
                                 )
                             ]
                         ],
@@ -68,7 +73,28 @@ def get_table(data, headings, visible):
                     ),
                     sg.Tab(
                         "Defense",
-                        [[sg.Text("test", key=AGGREGATE_TABLE_DEFENSE_KEY)]],
+                        [
+                            [
+                                sg.Table(
+                                    values=data,
+                                    headings=AGGREGATE_TABLE_DEFENSE_HEADINGS,
+                                    max_col_width=50,
+                                    auto_size_columns=True,
+                                    display_row_numbers=True,
+                                    justification="right",
+                                    num_rows=20,
+                                    expand_x=True,
+                                    expand_y=True,
+                                    alternating_row_color="lightyellow",
+                                    key=AGGREGATE_TABLE_DEFENSE_KEY,
+                                    enable_events=True,
+                                    enable_click_events=True,  # Comment out to not enable header and other clicks
+                                    tooltip="Main summary table with general information",
+                                    visible=visible,
+                                    vertical_scroll_only=False,
+                                )
+                            ]
+                        ],
                         visible=visible,
                         key=AGGREGATE_TABLE_DEFENSE_TAB_KEY,
                     ),
@@ -89,4 +115,4 @@ def handle_table_event(event, window, data):
         col_num_clicked = event[2][1]
         new_table = sort_table(data, col_num_clicked)
         print(new_table)
-        window[AGGREGATE_TABLE_KEY].update(new_table)
+        window[AGGREGATE_TABLE_SUMMARY_KEY].update(new_table)

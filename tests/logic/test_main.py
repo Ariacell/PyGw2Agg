@@ -40,5 +40,5 @@ class TestLogSorting:
         logs_list = get_logs_lists_per_player(
             ["billy", "jean"], self.get_sample_validated_logs()
         )
-        assert logs_list[0] == [self.log_1]
-        assert logs_list[1] == [self.log_1, self.log_2]
+        assert logs_list["billy"] == [self.log_1]
+        assert logs_list["jean"] == [self.log_1, self.log_2]
