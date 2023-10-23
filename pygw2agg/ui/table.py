@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 import operator
-
+from models.aggregated.misc import active_time_friendly_name
 
 # Use a 2D Array
 sg.theme("Light green 6")
@@ -37,11 +37,11 @@ AGGREGATE_TABLE_PSG_KEYS = [
 COMMON_HEADINGS = ["Name", "Account", "Profession"]
 
 
-AGGREGATE_TABLE_SUMMARY_HEADINGS = ["Ressurects"]
+AGGREGATE_TABLE_SUMMARY_HEADINGS = ["Ressurects", active_time_friendly_name]
 MERGED_AGGREGATE_TABLE_SUMMARY_HEADINGS = (
     COMMON_HEADINGS + AGGREGATE_TABLE_SUMMARY_HEADINGS
 )
-AGGREGATE_TABLE_DEFENSE_HEADINGS = ["Cleanses", "Resurrect Time"]
+AGGREGATE_TABLE_DEFENSE_HEADINGS = ["Cleanses", "Resurrect Time", "Average Cleanses"]
 MERGED_AGGREGATE_TABLE_DEFENSE_HEADINGS = (
     COMMON_HEADINGS + AGGREGATE_TABLE_DEFENSE_HEADINGS
 )

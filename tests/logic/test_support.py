@@ -39,4 +39,4 @@ def test_sum_cleanses_should_return_total_cleanses_in_model_structure():
 
 def test_average_cleanses_should_return_cleanses_per_min():
     test_player_name = "PlayerName"
-    test_total_stats = ""
+    test_total_stats = [AggregatedPlayerStat(friendly_name=)]

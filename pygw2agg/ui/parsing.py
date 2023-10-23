@@ -6,6 +6,7 @@ from PySimpleGUI import (
     InputText,
     FolderBrowse,
 )
+import traceback
 import structlog
 from pygw2agg.io.load_json import load_json
 from pygw2agg.io.parse import parse_zevtc_logs_to_json
@@ -105,6 +106,7 @@ def handle_parse_event(window: Window, event, values):
         toggle_table_display(window, True)
         return data
     except Exception as e:
+        traceback.print_exc()
         popup_error_with_traceback(f"Error while attempting to aggregate logs: {e}")
     finally:
         window[AGGREGATING_IN_PROGRESS_KEY].update(visible=False)
