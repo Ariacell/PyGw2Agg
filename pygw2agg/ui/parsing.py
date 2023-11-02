@@ -16,12 +16,9 @@ from pygw2agg.ui.mapping import map_aggregated_data_to_table_structure
 
 from pygw2agg.ui.settings import get_settings_path, get_user_settings
 from pygw2agg.ui.table import (
-    AGGREGATE_TABLE_DEFENSE_KEY,
-    AGGREGATE_TABLE_KEY,
-    AGGREGATE_TABLE_OFFENSE_KEY,
     AGGREGATE_TABLE_PSG_KEYS,
-    AGGREGATE_TABLE_SUMMARY_KEY,
     AGGREGATE_TABLE_SUMMARY_TAB_KEY,
+    TABLE_KEYS,
 )
 from pygw2agg.ui.utils import (
     get_working_directory,
@@ -74,7 +71,7 @@ def toggle_table_display(window, visible):
 
 
 def reset_table_values(window):
-    window[AGGREGATE_TABLE_SUMMARY_KEY].update(values=[])
+    window[TABLE_KEYS.AGGREGATE_TABLE_SUMMARY_KEY].update(values=[])
 
 
 def handle_parse_event(window: Window, event, values):
@@ -102,9 +99,10 @@ def handle_parse_event(window: Window, event, values):
         # Table data should have it's own tranformation in logic/model module, aggregation is a logic step, mapping to ui representation is a domain model responsibility imo.
         data = map_aggregated_data_to_table_structure(aggregated_data=aggregated_data)
         logger.debug(f"Mapped aggregated data to table structure: {data}")
-        window[AGGREGATE_TABLE_SUMMARY_KEY].update(values=data.summary)
-        window[AGGREGATE_TABLE_DEFENSE_KEY].update(values=data.defense)
-        window[AGGREGATE_TABLE_OFFENSE_KEY].update(values=data.offense)
+        window[TABLE_KEYS.AGGREGATE_TABLE_SUMMARY_KEY].update(values=data.summary)
+        window[TABLE_KEYS.AGGREGATE_TABLE_DEFENSE_KEY].update(values=data.defense)
+        window[TABLE_KEYS.AGGREGATE_TABLE_OFFENSE_KEY].update(values=data.offense)
+        window[TABLE_KEYS.AGGREGATE_TABLE_UTILITY_KEY].update(values=data.utility)
         toggle_table_display(window, True)
         return data
     except Exception as e:

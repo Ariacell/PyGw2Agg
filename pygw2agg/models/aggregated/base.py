@@ -10,5 +10,6 @@ class STAT_TAGS_ENUM(str, Enum):
     common = "common"
     summary = "summary"
     defense = "defense"
+    utility = "utility"
     offense = "offense"
     support = "support"

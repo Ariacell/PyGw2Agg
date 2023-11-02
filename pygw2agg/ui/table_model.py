@@ -6,3 +6,4 @@ class TableModel(BaseDomainModel):
     summary: List[Any]
     defense: List[Any]
     offense: List[Any]
+    utility: List[Any]

@@ -11,6 +11,7 @@ from pygw2agg.logic.support import (
     sum_ressurect_time,
     sum_ressurects,
 )
+from pygw2agg.logic.utility import sum_strips
 from pygw2agg.models.aggregated.misc import TotalActiveTime
 from pygw2agg.models.aggregated.player import AggregatedPlayer
 from pygw2agg.models.aggregated.stat import AggregatedPlayerStat
@@ -59,6 +60,7 @@ def get_player_totals_stats(player_name: str, logs: List[IndividualPlayerLogData
         sum_ressurects(player_support_stats=player_support_logs),
         sum_cleanses(player_support_stats=player_support_logs),
         sum_ressurect_time(player_support_stats=player_support_logs),
+        sum_strips(player_support_stats=player_support_logs),
         sum_damage(player_dps_all_stats=player_damage_logs),
         sum_down_contribution(player_all_stats=player_misc_logs),
     ]

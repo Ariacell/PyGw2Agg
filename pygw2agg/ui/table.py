@@ -1,3 +1,4 @@
+import types
 import PySimpleGUI as sg
 import operator
 from pygw2agg.models.aggregated.misc import active_time_friendly_name
@@ -12,6 +13,7 @@ from pygw2agg.models.aggregated.support import (
     get_total_cleanses_friendly_name,
     get_total_resurrects_friendly_name,
 )
+from pygw2agg.models.aggregated.utility import get_total_strips_friendly_name
 
 # Use a 2D Array
 sg.theme("Light green 6")
@@ -31,22 +33,28 @@ def sort_table(table, col_clicked):
 
 
 # ------ Window Layout ------
-AGGREGATE_TABLE_KEY = "-AGGREGATE_TABLE-"
+TABLE_KEYS = types.SimpleNamespace()
+
+TABLE_KEYS.AGGREGATE_TABLE_KEY = "-AGGREGATE_TABLE-"
 AGGREGATE_TABLE_SUMMARY_TAB_KEY = "-AGGREGATE_TABLE_TAB-SUMMARY"
-AGGREGATE_TABLE_SUMMARY_KEY = "-AGGREGATE_TABLE-SUMMARY"
+TABLE_KEYS.AGGREGATE_TABLE_SUMMARY_KEY = "-AGGREGATE_TABLE-SUMMARY"
 AGGREGATE_TABLE_DEFENSE_TAB_KEY = "-AGGREGATE_TABLE_TAB-DEFENSE"
-AGGREGATE_TABLE_DEFENSE_KEY = "-AGGREGATE_TABLE-DEFENSE"
+TABLE_KEYS.AGGREGATE_TABLE_DEFENSE_KEY = "-AGGREGATE_TABLE-DEFENSE"
 AGGREGATE_TABLE_OFFENSE_TAB_KEY = "-AGGREGATE_TABLE_TAB-OFFENSE"
-AGGREGATE_TABLE_OFFENSE_KEY = "-AGGREGATE_TABLE-OFFENSE"
+TABLE_KEYS.AGGREGATE_TABLE_OFFENSE_KEY = "-AGGREGATE_TABLE-OFFENSE"
+AGGREGATE_TABLE_UTILITY_TAB_KEY = "-AGGREGATE_TABLE_TAB-UTILTIY"
+TABLE_KEYS.AGGREGATE_TABLE_UTILITY_KEY = "-AGGREGATE_TABLE-UTILITY"
 
 AGGREGATE_TABLE_PSG_KEYS = [
-    AGGREGATE_TABLE_KEY,
+    TABLE_KEYS.AGGREGATE_TABLE_KEY,
     AGGREGATE_TABLE_SUMMARY_TAB_KEY,
-    AGGREGATE_TABLE_SUMMARY_KEY,
+    TABLE_KEYS.AGGREGATE_TABLE_SUMMARY_KEY,
     AGGREGATE_TABLE_DEFENSE_TAB_KEY,
-    AGGREGATE_TABLE_DEFENSE_KEY,
+    TABLE_KEYS.AGGREGATE_TABLE_DEFENSE_KEY,
     AGGREGATE_TABLE_OFFENSE_TAB_KEY,
-    AGGREGATE_TABLE_OFFENSE_KEY,
+    TABLE_KEYS.AGGREGATE_TABLE_OFFENSE_KEY,
+    AGGREGATE_TABLE_UTILITY_TAB_KEY,
+    TABLE_KEYS.AGGREGATE_TABLE_UTILITY_KEY,
 ]
 
 COMMON_HEADINGS = ["Name", "Account", "Profession"]
@@ -75,6 +83,12 @@ AGGREGATE_TABLE_OFFENSE_HEADINGS = [
 MERGED_AGGREGATE_TABLE_OFFENSE_HEADINGS = (
     COMMON_HEADINGS + AGGREGATE_TABLE_OFFENSE_HEADINGS
 )
+AGGREGATE_TABLE_UTILITY_HEADINGS = [
+    get_total_strips_friendly_name(),
+]
+MERGED_AGGREGATE_TABLE_UTILITY_HEADINGS = (
+    COMMON_HEADINGS + AGGREGATE_TABLE_UTILITY_HEADINGS
+)
 
 
 def get_table(data, visible):
@@ -97,7 +111,7 @@ def get_table(data, visible):
                                     expand_x=True,
                                     expand_y=True,
                                     alternating_row_color="lightyellow",
-                                    key=AGGREGATE_TABLE_SUMMARY_KEY,
+                                    key=TABLE_KEYS.AGGREGATE_TABLE_SUMMARY_KEY,
                                     enable_events=True,
                                     enable_click_events=True,  # Comment out to not enable header and other clicks
                                     tooltip="Main summary table with general information",
@@ -124,7 +138,7 @@ def get_table(data, visible):
                                     expand_x=True,
                                     expand_y=True,
                                     alternating_row_color="lightyellow",
-                                    key=AGGREGATE_TABLE_DEFENSE_KEY,
+                                    key=TABLE_KEYS.AGGREGATE_TABLE_DEFENSE_KEY,
                                     enable_events=True,
                                     enable_click_events=True,  # Comment out to not enable header and other clicks
                                     tooltip="Main summary table with general information",
@@ -151,7 +165,7 @@ def get_table(data, visible):
                                     expand_x=True,
                                     expand_y=True,
                                     alternating_row_color="lightyellow",
-                                    key=AGGREGATE_TABLE_OFFENSE_KEY,
+                                    key=TABLE_KEYS.AGGREGATE_TABLE_OFFENSE_KEY,
                                     enable_events=True,
                                     enable_click_events=True,  # Comment out to not enable header and other clicks
                                     tooltip="Main summary table with general information",
@@ -163,9 +177,36 @@ def get_table(data, visible):
                         visible=visible,
                         key=AGGREGATE_TABLE_OFFENSE_TAB_KEY,
                     ),
+                    sg.Tab(
+                        "Utility",
+                        [
+                            [
+                                sg.Table(
+                                    values=data,
+                                    headings=MERGED_AGGREGATE_TABLE_UTILITY_HEADINGS,
+                                    max_col_width=50,
+                                    auto_size_columns=True,
+                                    display_row_numbers=True,
+                                    justification="right",
+                                    num_rows=20,
+                                    expand_x=True,
+                                    expand_y=True,
+                                    alternating_row_color="lightyellow",
+                                    key=TABLE_KEYS.AGGREGATE_TABLE_UTILITY_KEY,
+                                    enable_events=True,
+                                    enable_click_events=True,  # Comment out to not enable header and other clicks
+                                    tooltip="Main summary table with general information",
+                                    visible=visible,
+                                    vertical_scroll_only=False,
+                                )
+                            ]
+                        ],
+                        visible=visible,
+                        key=AGGREGATE_TABLE_UTILITY_TAB_KEY,
+                    ),
                 ]
             ],
-            key=AGGREGATE_TABLE_KEY,
+            key=TABLE_KEYS.AGGREGATE_TABLE_KEY,
             visible=visible,
             expand_x=True,
             expand_y=True,
@@ -178,6 +219,18 @@ def handle_table_event(event, window, data):
         event[2][0] == -1 and event[2][1] != -1
     ):  # Header was clicked and wasn't the "row" column
         col_num_clicked = event[2][1]
-        new_table = sort_table(data, col_num_clicked)
-        print(new_table)
-        window[AGGREGATE_TABLE_SUMMARY_KEY].update(new_table)
+        match event[0]:
+            case TABLE_KEYS.AGGREGATE_TABLE_SUMMARY_KEY:
+                new_table = sort_table(data.summary, col_num_clicked)
+                window[TABLE_KEYS.AGGREGATE_TABLE_SUMMARY_KEY].update(new_table)
+            case TABLE_KEYS.AGGREGATE_TABLE_OFFENSE_KEY:
+                new_table = sort_table(data.offense, col_num_clicked)
+                window[TABLE_KEYS.AGGREGATE_TABLE_OFFENSE_KEY].update(new_table)
+            case TABLE_KEYS.AGGREGATE_TABLE_DEFENSE_KEY:
+                new_table = sort_table(data.defense, col_num_clicked)
+                window[TABLE_KEYS.AGGREGATE_TABLE_DEFENSE_KEY].update(new_table)
+            case TABLE_KEYS.AGGREGATE_TABLE_UTILITY_KEY:
+                new_table = sort_table(data.utility, col_num_clicked)
+                window[TABLE_KEYS.AGGREGATE_TABLE_UTILITY_KEY].update(new_table)
+            case _:
+                print("Unknown table key")
