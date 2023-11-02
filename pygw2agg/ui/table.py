@@ -1,6 +1,13 @@
 import PySimpleGUI as sg
 import operator
-from models.aggregated.misc import active_time_friendly_name
+from pygw2agg.models.aggregated.misc import active_time_friendly_name
+from pygw2agg.models.aggregated.support import (
+    get_average_cleanses_friendly_name,
+    get_average_resurrect_time_friendly_name,
+    get_average_resurrects_friendly_name,
+    get_total_cleanses_friendly_name,
+    get_total_resurrects_friendly_name,
+)
 
 # Use a 2D Array
 sg.theme("Light green 6")
@@ -37,11 +44,19 @@ AGGREGATE_TABLE_PSG_KEYS = [
 COMMON_HEADINGS = ["Name", "Account", "Profession"]
 
 
-AGGREGATE_TABLE_SUMMARY_HEADINGS = ["Ressurects", active_time_friendly_name]
+AGGREGATE_TABLE_SUMMARY_HEADINGS = [
+    get_total_resurrects_friendly_name(),
+    active_time_friendly_name,
+]
 MERGED_AGGREGATE_TABLE_SUMMARY_HEADINGS = (
     COMMON_HEADINGS + AGGREGATE_TABLE_SUMMARY_HEADINGS
 )
-AGGREGATE_TABLE_DEFENSE_HEADINGS = ["Cleanses", "Resurrect Time", "Average Cleanses"]
+AGGREGATE_TABLE_DEFENSE_HEADINGS = [
+    get_total_cleanses_friendly_name(),
+    get_average_resurrects_friendly_name(),
+    get_average_resurrect_time_friendly_name(),
+    get_average_cleanses_friendly_name(),
+]
 MERGED_AGGREGATE_TABLE_DEFENSE_HEADINGS = (
     COMMON_HEADINGS + AGGREGATE_TABLE_DEFENSE_HEADINGS
 )

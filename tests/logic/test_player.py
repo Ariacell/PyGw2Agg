@@ -1,3 +1,4 @@
+from unittest.mock import patch
 from pygw2agg.logic.player import (
     aggregate_player_logs,
     get_player_averages_stats,
@@ -6,6 +7,14 @@ from pygw2agg.logic.player import (
 )
 from pygw2agg.models.aggregated.player import AggregatedPlayer
 from pygw2agg.models.aggregated.stat import AggregatedPlayerStat
+from pygw2agg.models.aggregated.support import (
+    AvgCleanses,
+    AvgResurrectTime,
+    AvgResurrects,
+    TotalCleanses,
+    TotalResurrectTime,
+    TotalResurrects,
+)
 from pygw2agg.models.common.professions import ProfessionEnum
 from pygw2agg.models.domain.individual_player_log import get_stub_individual_player_log
 from pygw2agg.models.ei_output.log_data import (
@@ -90,14 +99,23 @@ class TestGetPlayerTotals:
             self.test_player_name, self.test_individual_data
         )
 
-    # Todo: implement additional mocking for individual methods called to collate totals stats
-    def test_get_player_averages_stats_should_not_crash(self):
-        test_totals_stats = [
-            AggregatedPlayerStat(
-                friendly_name="Some Name",
-                key="some_key",
-                tags=["tag"],
-                value="some value",
-            )
+
+class TestGetPlayerAverageStats:
+    def get_totals_stats(name: str):
+        return [
+            TotalCleanses(
+                value=120,
+            ),
+            TotalResurrects(value=30),
+            TotalResurrectTime(value=60.0),
         ]
-        result = get_player_averages_stats(12.0, [])
+
+    def test_get_player_averages_stats_should_not_crash(self):
+        one_minute_in_ms = 60000
+        totals_stats = self.get_totals_stats()
+        result = get_player_averages_stats(one_minute_in_ms, totals_stats)
+        assert result == [
+            AvgCleanses(value=120),
+            AvgResurrects(value=30),
+            AvgResurrectTime(value=60.0),
+        ]

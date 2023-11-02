@@ -8,6 +8,7 @@ class BaseAggregatedModel(BaseModel):
 
 class STAT_TAGS_ENUM(str, Enum):
     common = "common"
+    summary = "summary"
     defense = "defense"
     offense = "offense"
     support = "support"

@@ -2,7 +2,14 @@ from datetime import timedelta
 from decimal import Decimal
 from functools import reduce
 from typing import List
-from pygw2agg.logic.support import avg_cleanses, sum_cleanses, sum_ressurects
+from pygw2agg.logic.support import (
+    avg_cleanses,
+    avg_resurrect_time,
+    avg_resurrects,
+    sum_cleanses,
+    sum_ressurect_time,
+    sum_ressurects,
+)
 from pygw2agg.models.aggregated.misc import TotalActiveTime
 from pygw2agg.models.aggregated.player import AggregatedPlayer
 from pygw2agg.models.aggregated.stat import AggregatedPlayerStat
@@ -46,16 +53,21 @@ def get_player_totals_stats(player_name: str, logs: List[IndividualPlayerLogData
                 get_player_total_active_time(logs=logs)
             )
         ),
-        sum_ressurects(player_support_logs),
-        sum_cleanses(player_support_logs),
+        sum_ressurects(player_support_stats=player_support_logs),
+        sum_cleanses(player_support_stats=player_support_logs),
+        sum_ressurect_time(player_support_stats=player_support_logs),
     ]
 
 
 def get_player_averages_stats(
     total_active_time: Decimal, totals_stats: List[AggregatedPlayerStat]
-):
+) -> List[AggregatedPlayerStat]:
     return [
-        avg_cleanses(player_active_time=total_active_time, totals_stats=totals_stats)
+        avg_cleanses(player_active_time=total_active_time, totals_stats=totals_stats),
+        avg_resurrects(player_active_time=total_active_time, totals_stats=totals_stats),
+        avg_resurrect_time(
+            player_active_time=total_active_time, totals_stats=totals_stats
+        ),
     ]
 
 
