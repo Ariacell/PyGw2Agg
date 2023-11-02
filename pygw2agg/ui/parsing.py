@@ -18,6 +18,7 @@ from pygw2agg.ui.settings import get_settings_path, get_user_settings
 from pygw2agg.ui.table import (
     AGGREGATE_TABLE_DEFENSE_KEY,
     AGGREGATE_TABLE_KEY,
+    AGGREGATE_TABLE_OFFENSE_KEY,
     AGGREGATE_TABLE_PSG_KEYS,
     AGGREGATE_TABLE_SUMMARY_KEY,
     AGGREGATE_TABLE_SUMMARY_TAB_KEY,
@@ -103,6 +104,7 @@ def handle_parse_event(window: Window, event, values):
         logger.debug(f"Mapped aggregated data to table structure: {data}")
         window[AGGREGATE_TABLE_SUMMARY_KEY].update(values=data.summary)
         window[AGGREGATE_TABLE_DEFENSE_KEY].update(values=data.defense)
+        window[AGGREGATE_TABLE_OFFENSE_KEY].update(values=data.offense)
         toggle_table_display(window, True)
         return data
     except Exception as e:

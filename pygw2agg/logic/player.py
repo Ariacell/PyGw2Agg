@@ -2,6 +2,7 @@ from datetime import timedelta
 from decimal import Decimal
 from functools import reduce
 from typing import List
+from pygw2agg.logic.offense import sum_damage, sum_down_contribution
 from pygw2agg.logic.support import (
     avg_cleanses,
     avg_resurrect_time,
@@ -47,6 +48,8 @@ def get_player_total_active_rounds(logs: List[IndividualPlayerLogData]):
 
 def get_player_totals_stats(player_name: str, logs: List[IndividualPlayerLogData]):
     player_support_logs = [log.player.support[0] for log in logs]
+    player_damage_logs = [log.player.dpsAll[0] for log in logs]
+    player_misc_logs = [log.player.statsAll[0] for log in logs]
     return [
         TotalActiveTime(
             value=get_player_human_friendly_active_time(
@@ -56,6 +59,8 @@ def get_player_totals_stats(player_name: str, logs: List[IndividualPlayerLogData
         sum_ressurects(player_support_stats=player_support_logs),
         sum_cleanses(player_support_stats=player_support_logs),
         sum_ressurect_time(player_support_stats=player_support_logs),
+        sum_damage(player_dps_all_stats=player_damage_logs),
+        sum_down_contribution(player_all_stats=player_misc_logs),
     ]
 
 

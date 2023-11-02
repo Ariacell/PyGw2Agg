@@ -1,6 +1,10 @@
 import PySimpleGUI as sg
 import operator
 from pygw2agg.models.aggregated.misc import active_time_friendly_name
+from pygw2agg.models.aggregated.offense import (
+    get_total_damage_friendly_name,
+    get_total_downed_contribution_friendly_name,
+)
 from pygw2agg.models.aggregated.support import (
     get_average_cleanses_friendly_name,
     get_average_resurrect_time_friendly_name,
@@ -32,6 +36,8 @@ AGGREGATE_TABLE_SUMMARY_TAB_KEY = "-AGGREGATE_TABLE_TAB-SUMMARY"
 AGGREGATE_TABLE_SUMMARY_KEY = "-AGGREGATE_TABLE-SUMMARY"
 AGGREGATE_TABLE_DEFENSE_TAB_KEY = "-AGGREGATE_TABLE_TAB-DEFENSE"
 AGGREGATE_TABLE_DEFENSE_KEY = "-AGGREGATE_TABLE-DEFENSE"
+AGGREGATE_TABLE_OFFENSE_TAB_KEY = "-AGGREGATE_TABLE_TAB-OFFENSE"
+AGGREGATE_TABLE_OFFENSE_KEY = "-AGGREGATE_TABLE-OFFENSE"
 
 AGGREGATE_TABLE_PSG_KEYS = [
     AGGREGATE_TABLE_KEY,
@@ -39,6 +45,8 @@ AGGREGATE_TABLE_PSG_KEYS = [
     AGGREGATE_TABLE_SUMMARY_KEY,
     AGGREGATE_TABLE_DEFENSE_TAB_KEY,
     AGGREGATE_TABLE_DEFENSE_KEY,
+    AGGREGATE_TABLE_OFFENSE_TAB_KEY,
+    AGGREGATE_TABLE_OFFENSE_KEY,
 ]
 
 COMMON_HEADINGS = ["Name", "Account", "Profession"]
@@ -59,6 +67,13 @@ AGGREGATE_TABLE_DEFENSE_HEADINGS = [
 ]
 MERGED_AGGREGATE_TABLE_DEFENSE_HEADINGS = (
     COMMON_HEADINGS + AGGREGATE_TABLE_DEFENSE_HEADINGS
+)
+AGGREGATE_TABLE_OFFENSE_HEADINGS = [
+    get_total_downed_contribution_friendly_name(),
+    get_total_damage_friendly_name(),
+]
+MERGED_AGGREGATE_TABLE_OFFENSE_HEADINGS = (
+    COMMON_HEADINGS + AGGREGATE_TABLE_OFFENSE_HEADINGS
 )
 
 
@@ -120,6 +135,33 @@ def get_table(data, visible):
                         ],
                         visible=visible,
                         key=AGGREGATE_TABLE_DEFENSE_TAB_KEY,
+                    ),
+                    sg.Tab(
+                        "Offense",
+                        [
+                            [
+                                sg.Table(
+                                    values=data,
+                                    headings=MERGED_AGGREGATE_TABLE_OFFENSE_HEADINGS,
+                                    max_col_width=50,
+                                    auto_size_columns=True,
+                                    display_row_numbers=True,
+                                    justification="right",
+                                    num_rows=20,
+                                    expand_x=True,
+                                    expand_y=True,
+                                    alternating_row_color="lightyellow",
+                                    key=AGGREGATE_TABLE_OFFENSE_KEY,
+                                    enable_events=True,
+                                    enable_click_events=True,  # Comment out to not enable header and other clicks
+                                    tooltip="Main summary table with general information",
+                                    visible=visible,
+                                    vertical_scroll_only=False,
+                                )
+                            ]
+                        ],
+                        visible=visible,
+                        key=AGGREGATE_TABLE_OFFENSE_TAB_KEY,
                     ),
                 ]
             ],
