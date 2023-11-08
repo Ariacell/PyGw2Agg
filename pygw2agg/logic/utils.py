@@ -1,4 +1,5 @@
 from decimal import Decimal, Context
+from functools import reduce
 from typing import List
 
 import structlog

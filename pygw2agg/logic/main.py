@@ -8,13 +8,6 @@ from pygw2agg.models.ei_output.log_data import LogData
 
 logger = structlog.get_logger("logic_main")
 
-# return [
-#     AggregatedPlayer(
-#         name=player.name, account=player.account, profession=player.profession
-#     )
-#     for player in log.players
-# ]
-
 
 def get_player_names(log: LogData):
     return [player.name for player in log.players]

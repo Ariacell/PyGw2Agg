@@ -2,6 +2,7 @@ from datetime import timedelta
 from decimal import Decimal
 from functools import reduce
 from typing import List
+from pygw2agg.logic.defense import avg_dodges, sum_dodges
 from pygw2agg.logic.offense import sum_damage, sum_down_contribution
 from pygw2agg.logic.support import (
     avg_cleanses,
@@ -11,7 +12,12 @@ from pygw2agg.logic.support import (
     sum_ressurect_time,
     sum_ressurects,
 )
-from pygw2agg.logic.utility import sum_strips
+from pygw2agg.logic.utility import (
+    avg_distance_to_comm,
+    avg_distance_to_squad,
+    sum_rounds,
+    sum_strips,
+)
 from pygw2agg.models.aggregated.misc import TotalActiveTime
 from pygw2agg.models.aggregated.player import AggregatedPlayer
 from pygw2agg.models.aggregated.stat import AggregatedPlayerStat
@@ -51,6 +57,7 @@ def get_player_totals_stats(player_name: str, logs: List[IndividualPlayerLogData
     player_support_logs = [log.player.support[0] for log in logs]
     player_damage_logs = [log.player.dpsAll[0] for log in logs]
     player_misc_logs = [log.player.statsAll[0] for log in logs]
+    player_defense_logs = [log.player.defenses[0] for log in logs]
     return [
         TotalActiveTime(
             value=get_player_human_friendly_active_time(
@@ -63,6 +70,10 @@ def get_player_totals_stats(player_name: str, logs: List[IndividualPlayerLogData
         sum_strips(player_support_stats=player_support_logs),
         sum_damage(player_dps_all_stats=player_damage_logs),
         sum_down_contribution(player_all_stats=player_misc_logs),
+        sum_rounds(player_stats=logs),
+        sum_dodges(player_defense_stats=player_defense_logs),
+        avg_distance_to_comm(player_misc_stats=player_misc_logs),
+        avg_distance_to_squad(player_misc_stats=player_misc_logs),
     ]
 
 
@@ -75,6 +86,7 @@ def get_player_averages_stats(
         avg_resurrect_time(
             player_active_time=total_active_time, totals_stats=totals_stats
         ),
+        avg_dodges(player_active_time=total_active_time, totals_stats=totals_stats),
     ]
 
 

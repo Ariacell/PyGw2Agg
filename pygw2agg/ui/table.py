@@ -1,6 +1,10 @@
 import types
 import PySimpleGUI as sg
 import operator
+from pygw2agg.models.aggregated.defense import (
+    get_avg_dodge_count_friendly_name,
+    get_total_dodge_count_friendly_name,
+)
 from pygw2agg.models.aggregated.misc import active_time_friendly_name
 from pygw2agg.models.aggregated.offense import (
     get_total_damage_friendly_name,
@@ -13,7 +17,12 @@ from pygw2agg.models.aggregated.support import (
     get_total_cleanses_friendly_name,
     get_total_resurrects_friendly_name,
 )
-from pygw2agg.models.aggregated.utility import get_total_strips_friendly_name
+from pygw2agg.models.aggregated.utility import (
+    get_avg_comm_distance_friendly_name,
+    get_avg_squad_distance_friendly_name,
+    get_total_rounds_friendly_name,
+    get_total_strips_friendly_name,
+)
 
 # Use a 2D Array
 sg.theme("Light green 6")
@@ -63,6 +72,7 @@ COMMON_HEADINGS = ["Name", "Account", "Profession"]
 AGGREGATE_TABLE_SUMMARY_HEADINGS = [
     get_total_resurrects_friendly_name(),
     active_time_friendly_name,
+    get_total_rounds_friendly_name(),
 ]
 MERGED_AGGREGATE_TABLE_SUMMARY_HEADINGS = (
     COMMON_HEADINGS + AGGREGATE_TABLE_SUMMARY_HEADINGS
@@ -72,6 +82,8 @@ AGGREGATE_TABLE_DEFENSE_HEADINGS = [
     get_average_resurrects_friendly_name(),
     get_average_resurrect_time_friendly_name(),
     get_average_cleanses_friendly_name(),
+    get_total_dodge_count_friendly_name(),
+    get_avg_dodge_count_friendly_name(),
 ]
 MERGED_AGGREGATE_TABLE_DEFENSE_HEADINGS = (
     COMMON_HEADINGS + AGGREGATE_TABLE_DEFENSE_HEADINGS
@@ -85,6 +97,8 @@ MERGED_AGGREGATE_TABLE_OFFENSE_HEADINGS = (
 )
 AGGREGATE_TABLE_UTILITY_HEADINGS = [
     get_total_strips_friendly_name(),
+    get_avg_squad_distance_friendly_name(),
+    get_avg_comm_distance_friendly_name(),
 ]
 MERGED_AGGREGATE_TABLE_UTILITY_HEADINGS = (
     COMMON_HEADINGS + AGGREGATE_TABLE_UTILITY_HEADINGS
