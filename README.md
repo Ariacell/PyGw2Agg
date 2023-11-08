@@ -51,8 +51,10 @@ poetry run ./pygw2agg/main.py
 
 ### Building a release
 
+You will need nuitka on your path: <https://nuitka.net/doc/user-manual.html>
+
 ```sh
-pyinstaller --onefile pygw2agg/main.py
+nuitka .\pygw2agg\main.py --follow-imports --standalone --enable-plugin=tk-inter
 ```
 
-This will create a /dist/main/main.exe file that can be executed to run the application in standalone mode.
+This will create a main.dist folder that can be zipped for release without triggering windows defender or other anti-virus software. An installer could be implemented later on.

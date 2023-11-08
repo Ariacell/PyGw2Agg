@@ -4,6 +4,9 @@ venv
 
 *.csv
 
+main.dist
+main.dist.zip
+main.build
 dist
 build
 main.spec
