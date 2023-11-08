@@ -84,6 +84,7 @@ AGGREGATE_TABLE_SUMMARY_HEADINGS = [
     active_time_friendly_name,
     get_total_rounds_friendly_name(),
     get_average_dps_friendly_name(),
+    get_average_downed_contribution_friendly_name(),
     get_avg_damage_taken_friendly_name(),
     get_average_cleanses_friendly_name(),
     get_average_strips_friendly_name(),
