@@ -2,11 +2,19 @@ import types
 import PySimpleGUI as sg
 import operator
 from pygw2agg.models.aggregated.defense import (
+    get_avg_damage_taken_friendly_name,
+    get_avg_deaths_per_min_friendly_name,
     get_avg_dodge_count_friendly_name,
+    get_avg_downs_per_min_friendly_name,
+    get_total_damage_taken_friendly_name,
+    get_total_deaths_friendly_name,
     get_total_dodge_count_friendly_name,
+    get_total_times_downed_friendly_name,
 )
 from pygw2agg.models.aggregated.misc import active_time_friendly_name
 from pygw2agg.models.aggregated.offense import (
+    get_average_downed_contribution_friendly_name,
+    get_average_dps_friendly_name,
     get_total_damage_friendly_name,
     get_total_downed_contribution_friendly_name,
 )
@@ -18,8 +26,11 @@ from pygw2agg.models.aggregated.support import (
     get_total_resurrects_friendly_name,
 )
 from pygw2agg.models.aggregated.utility import (
+    get_average_interrupts_friendly_name,
+    get_average_strips_friendly_name,
     get_avg_comm_distance_friendly_name,
     get_avg_squad_distance_friendly_name,
+    get_total_interrupts_friendly_name,
     get_total_rounds_friendly_name,
     get_total_strips_friendly_name,
 )
@@ -70,20 +81,33 @@ COMMON_HEADINGS = ["Name", "Account", "Profession"]
 
 
 AGGREGATE_TABLE_SUMMARY_HEADINGS = [
-    get_total_resurrects_friendly_name(),
     active_time_friendly_name,
     get_total_rounds_friendly_name(),
+    get_average_dps_friendly_name(),
+    get_avg_damage_taken_friendly_name(),
+    get_average_cleanses_friendly_name(),
+    get_average_strips_friendly_name(),
+    get_average_interrupts_friendly_name(),
+    get_avg_downs_per_min_friendly_name(),
+    get_avg_deaths_per_min_friendly_name(),
 ]
 MERGED_AGGREGATE_TABLE_SUMMARY_HEADINGS = (
     COMMON_HEADINGS + AGGREGATE_TABLE_SUMMARY_HEADINGS
 )
 AGGREGATE_TABLE_DEFENSE_HEADINGS = [
     get_total_cleanses_friendly_name(),
+    get_average_cleanses_friendly_name(),
+    get_total_resurrects_friendly_name(),
     get_average_resurrects_friendly_name(),
     get_average_resurrect_time_friendly_name(),
-    get_average_cleanses_friendly_name(),
     get_total_dodge_count_friendly_name(),
     get_avg_dodge_count_friendly_name(),
+    get_total_damage_taken_friendly_name(),
+    get_avg_damage_taken_friendly_name(),
+    get_total_times_downed_friendly_name(),
+    get_avg_downs_per_min_friendly_name(),
+    get_total_deaths_friendly_name(),
+    get_avg_deaths_per_min_friendly_name(),
 ]
 MERGED_AGGREGATE_TABLE_DEFENSE_HEADINGS = (
     COMMON_HEADINGS + AGGREGATE_TABLE_DEFENSE_HEADINGS
@@ -91,12 +115,17 @@ MERGED_AGGREGATE_TABLE_DEFENSE_HEADINGS = (
 AGGREGATE_TABLE_OFFENSE_HEADINGS = [
     get_total_downed_contribution_friendly_name(),
     get_total_damage_friendly_name(),
+    get_average_dps_friendly_name(),
+    get_average_downed_contribution_friendly_name(),
 ]
 MERGED_AGGREGATE_TABLE_OFFENSE_HEADINGS = (
     COMMON_HEADINGS + AGGREGATE_TABLE_OFFENSE_HEADINGS
 )
 AGGREGATE_TABLE_UTILITY_HEADINGS = [
     get_total_strips_friendly_name(),
+    get_average_strips_friendly_name(),
+    get_total_interrupts_friendly_name(),
+    get_average_interrupts_friendly_name(),
     get_avg_squad_distance_friendly_name(),
     get_avg_comm_distance_friendly_name(),
 ]
@@ -117,9 +146,9 @@ def get_table(data, visible):
                                 sg.Table(
                                     values=data,
                                     headings=MERGED_AGGREGATE_TABLE_SUMMARY_HEADINGS,
-                                    max_col_width=50,
+                                    max_col_width=20,
                                     auto_size_columns=True,
-                                    display_row_numbers=True,
+                                    display_row_numbers=False,
                                     justification="right",
                                     num_rows=20,
                                     expand_x=True,
@@ -144,9 +173,9 @@ def get_table(data, visible):
                                 sg.Table(
                                     values=data,
                                     headings=MERGED_AGGREGATE_TABLE_DEFENSE_HEADINGS,
-                                    max_col_width=50,
+                                    max_col_width=20,
                                     auto_size_columns=True,
-                                    display_row_numbers=True,
+                                    display_row_numbers=False,
                                     justification="right",
                                     num_rows=20,
                                     expand_x=True,
@@ -171,9 +200,9 @@ def get_table(data, visible):
                                 sg.Table(
                                     values=data,
                                     headings=MERGED_AGGREGATE_TABLE_OFFENSE_HEADINGS,
-                                    max_col_width=50,
+                                    max_col_width=20,
                                     auto_size_columns=True,
-                                    display_row_numbers=True,
+                                    display_row_numbers=False,
                                     justification="right",
                                     num_rows=20,
                                     expand_x=True,
@@ -198,9 +227,9 @@ def get_table(data, visible):
                                 sg.Table(
                                     values=data,
                                     headings=MERGED_AGGREGATE_TABLE_UTILITY_HEADINGS,
-                                    max_col_width=50,
+                                    max_col_width=20,
                                     auto_size_columns=True,
-                                    display_row_numbers=True,
+                                    display_row_numbers=False,
                                     justification="right",
                                     num_rows=20,
                                     expand_x=True,

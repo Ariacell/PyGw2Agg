@@ -77,3 +77,39 @@ class AvgStrips(AggregatedPlayerStat):
     friendly_name: str = get_average_strips_friendly_name()
     tags: List[str] = [STAT_TAGS_ENUM.utility.value]
     value: Decimal
+
+
+# INTERRUPTS
+
+
+def get_total_interrupts_key():
+    return "total_interrupts"
+
+
+def get_total_interrupts_friendly_name():
+    return "Total Interrupts"
+
+
+class TotalInterrupts(AggregatedPlayerStat):
+    key: str = get_total_interrupts_key()
+    friendly_name: str = get_total_interrupts_friendly_name()
+    tags: List[str] = [STAT_TAGS_ENUM.utility.value]
+    value: int
+
+
+def get_average_interrupts_key():
+    return "average_interrupts"
+
+
+def get_average_interrupts_friendly_name():
+    return "Average Interrupts"
+
+
+class AvgInterrupts(AggregatedPlayerStat):
+    key: str = get_average_interrupts_key()
+    friendly_name: str = get_average_interrupts_friendly_name()
+    tags: List[str] = [STAT_TAGS_ENUM.utility.value]
+    value: Decimal
+
+
+# /INTERRUPTS

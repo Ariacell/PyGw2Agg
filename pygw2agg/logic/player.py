@@ -2,8 +2,22 @@ from datetime import timedelta
 from decimal import Decimal
 from functools import reduce
 from typing import List
-from pygw2agg.logic.defense import avg_dodges, sum_dodges
-from pygw2agg.logic.offense import sum_damage, sum_down_contribution
+from pygw2agg.logic.defense import (
+    avg_deaths,
+    avg_dmg_taken,
+    avg_dodges,
+    avg_times_downed,
+    sum_deaths,
+    sum_dmg_taken,
+    sum_dodges,
+    sum_times_downed,
+)
+from pygw2agg.logic.offense import (
+    avg_downed_contribution,
+    avg_dps,
+    sum_damage,
+    sum_down_contribution,
+)
 from pygw2agg.logic.support import (
     avg_cleanses,
     avg_resurrect_time,
@@ -15,6 +29,9 @@ from pygw2agg.logic.support import (
 from pygw2agg.logic.utility import (
     avg_distance_to_comm,
     avg_distance_to_squad,
+    avg_interrupts,
+    avg_strips,
+    sum_interrupts,
     sum_rounds,
     sum_strips,
 )
@@ -68,8 +85,12 @@ def get_player_totals_stats(player_name: str, logs: List[IndividualPlayerLogData
         sum_cleanses(player_support_stats=player_support_logs),
         sum_ressurect_time(player_support_stats=player_support_logs),
         sum_strips(player_support_stats=player_support_logs),
+        sum_interrupts(player_misc_logs=player_misc_logs),
         sum_damage(player_dps_all_stats=player_damage_logs),
+        sum_dmg_taken(player_defense_stats=player_defense_logs),
         sum_down_contribution(player_all_stats=player_misc_logs),
+        sum_times_downed(player_defense_stats=player_defense_logs),
+        sum_deaths(player_defense_stats=player_defense_logs),
         sum_rounds(player_stats=logs),
         sum_dodges(player_defense_stats=player_defense_logs),
         avg_distance_to_comm(player_misc_stats=player_misc_logs),
@@ -86,6 +107,17 @@ def get_player_averages_stats(
         avg_resurrect_time(
             player_active_time=total_active_time, totals_stats=totals_stats
         ),
+        avg_dps(player_active_time=total_active_time, totals_stats=totals_stats),
+        avg_downed_contribution(
+            player_active_time=total_active_time, totals_stats=totals_stats
+        ),
+        avg_times_downed(
+            player_active_time=total_active_time, totals_stats=totals_stats
+        ),
+        avg_strips(player_active_time=total_active_time, totals_stats=totals_stats),
+        avg_interrupts(player_active_time=total_active_time, totals_stats=totals_stats),
+        avg_deaths(player_active_time=total_active_time, totals_stats=totals_stats),
+        avg_dmg_taken(player_active_time=total_active_time, totals_stats=totals_stats),
         avg_dodges(player_active_time=total_active_time, totals_stats=totals_stats),
     ]
 

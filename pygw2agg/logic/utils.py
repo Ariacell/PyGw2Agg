@@ -27,3 +27,7 @@ def get_stat_by_key(key: str, stats_list: List[AggregatedPlayerStat]):
 
 def get_avg_stat_by_min(stat_value: Decimal | int, time_value: Decimal):
     return round(Decimal(stat_value / (time_value / Decimal(1000)) * 60), 2)
+
+
+def get_avg_stat_by_sec(stat_value: Decimal | int, time_value: Decimal):
+    return round(Decimal(stat_value / (time_value / Decimal(1000))), 2)
