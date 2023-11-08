@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import structlog
 from pygw2agg.settings_keys import INPUT_DIRECTORY_KEY
+from pygw2agg.ui.exporting import handle_export_menu_event
 from pygw2agg.ui.layout import get_layout
 from pygw2agg.ui.parsing import (
     handle_input_path_event,
@@ -58,6 +59,14 @@ def display_table():
                 handle_input_path_event(window, event, values)
             if event == "Settings":
                 handle_file_menu_event(event, values)
+            if event == "Export":
+                handle_export_menu_event(
+                    event,
+                    values,
+                    [
+                        window[TABLE_KEYS.AGGREGATE_TABLE_SUMMARY_KEY],
+                    ],
+                )
     window.close()
 
 

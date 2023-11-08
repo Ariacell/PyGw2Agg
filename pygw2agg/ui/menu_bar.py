@@ -3,9 +3,7 @@ from PySimpleGUI import Menu
 menu_def = [
     [
         "File",
-        [
-            "Settings",
-        ],
+        ["Settings", "Export"],
     ],
 ]
 
