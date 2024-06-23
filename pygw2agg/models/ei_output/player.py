@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
 from pygw2agg.models.common.professions import ProfessionEnum
 from pygw2agg.models.ei_output.base_ei_model import BaseEiJsonModel
@@ -31,7 +31,7 @@ from pygw2agg.models.ei_output.player_support_stats import (
 
 
 class Player(BaseEiJsonModel):
-    account: str
+    account: Optional[str] = None
     name: str
     activeTimes: List[Decimal]
     group: int
@@ -39,7 +39,7 @@ class Player(BaseEiJsonModel):
     profession: ProfessionEnum
     friendlyNPC: bool
     notInSquad: bool
-    guildID: str
+    guildID: Optional[str] = None
     weapons: List[object]
     support: List[PlayerSupportStats]
     dpsAll: List[PlayerDpsAllStats]

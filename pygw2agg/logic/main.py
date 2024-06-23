@@ -9,20 +9,46 @@ from pygw2agg.models.ei_output.log_data import LogData
 logger = structlog.get_logger("logic_main")
 
 
-def get_player_names(log: LogData):
-    return [player.name for player in log.players]
+def get_squad_player_names(log: LogData):
+    return [player.name for player in log.players if player.notInSquad == False]
 
 
 def get_unique_players_for_log_set(log_dataset: List[LogData]):
-    return set(flatten_list(list(map(get_player_names, log_dataset))))
+    return set(flatten_list(list(map(get_squad_player_names, log_dataset))))
+
+
+def safe_string_list_get(l, key):
+    try:
+        return l.index(key)
+    except ValueError:
+        return False
 
 
 def get_logs_involving_player(player_name: str, log_dataset: List[LogData]):
-    return [
-        log
-        for log in log_dataset
-        if any([player_name == name for name in get_player_names(log=log)])
-    ]
+    logs_to_return = []
+    for log in log_dataset:
+        playerData = [player for player in log.players if player_name == player.name]
+        if playerData == [] or len(playerData) > 1:
+            break
+        safePlayerData = playerData[0]
+        if safePlayerData.defenses[0].damageTaken != 0:
+            print(f"This one would be added!")
+            logs_to_return.append(log)
+    print(f"Got {len(logs_to_return)} for {player_name}")
+    return logs_to_return
+    # return [
+    #     log
+    #     for log in log_dataset
+    #     if any(
+    #         player
+    #         for player in log.players
+    #         if (
+    #             # get_squad_player_names(log=log).index(player_name) != -1
+    #             player.defenses[0].damageTaken
+    #             != 0
+    #         )
+    #     )
+    # ]
 
 
 def get_logs_lists_per_player(

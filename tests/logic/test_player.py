@@ -5,6 +5,13 @@ from pygw2agg.logic.player import (
     get_player_total_active_time,
     get_player_totals_stats,
 )
+from pygw2agg.models.aggregated.defense import (
+    TotalDamageTaken,
+    TotalDeaths,
+    TotalDodgeCount,
+    TotalTimesDowned,
+)
+from pygw2agg.models.aggregated.offense import TotalDamage, TotalDownContribution
 from pygw2agg.models.aggregated.player import AggregatedPlayer
 from pygw2agg.models.aggregated.stat import AggregatedPlayerStat
 from pygw2agg.models.aggregated.support import (
@@ -15,6 +22,7 @@ from pygw2agg.models.aggregated.support import (
     TotalResurrectTime,
     TotalResurrects,
 )
+from pygw2agg.models.aggregated.utility import TotalInterrupts, TotalStrips
 from pygw2agg.models.common.professions import ProfessionEnum
 from pygw2agg.models.domain.individual_player_log import get_stub_individual_player_log
 from pygw2agg.models.ei_output.log_data import (
@@ -108,6 +116,14 @@ class TestGetPlayerAverageStats:
             ),
             TotalResurrects(value=30),
             TotalResurrectTime(value=60.0),
+            TotalDamage(value=10000),
+            TotalDownContribution(value=200),
+            TotalDamageTaken(value=1000),
+            TotalTimesDowned(value=2),
+            TotalDodgeCount(value=16),
+            TotalStrips(value=40),
+            TotalInterrupts(value=6),
+            TotalDeaths(value=1),
         ]
 
     def test_get_player_averages_stats_should_not_crash(self):
