@@ -28,12 +28,26 @@ def get_logs_involving_player(player_name: str, log_dataset: List[LogData]):
     logs_to_return = []
     for log in log_dataset:
         playerData = [player for player in log.players if player_name == player.name]
-        if playerData == [] or len(playerData) > 1:
-            break
+        if playerData == []:
+            logger.debug(
+                f"Found no player data in log {log.timeStart} for player {player_name}"
+            )
+            continue
+        if len(playerData) > 1:
+            logger.debug(
+                f"Found more than one player data in log {log.timeStart} for player {player_name}"
+            )
+            continue
         safePlayerData = playerData[0]
         if safePlayerData.defenses[0].damageTaken != 0:
-            print(f"This one would be added!")
+            logger.debug(
+                f"Adding log at {log.timeStart} for player {safePlayerData.name}!"
+            )
             logs_to_return.append(log)
+        else:
+            logger.debug(
+                f"Skipping {log.timeStart} for player {safePlayerData.name} as they took no damage!"
+            )
     print(f"Got {len(logs_to_return)} for {player_name}")
     return logs_to_return
     # return [
@@ -65,9 +79,9 @@ def get_logs_lists_per_player(
 
 def aggregate_log_data(log_dataset: List[LogData]) -> List[AggregatedPlayer]:
     logger.info(f"Aggregating {len(log_dataset)} logs")
-    deuped_player_names = get_unique_players_for_log_set(log_dataset=log_dataset)
+    deduped_player_names = get_unique_players_for_log_set(log_dataset=log_dataset)
     log_lists = get_logs_lists_per_player(
-        player_names=deuped_player_names, log_dataset=log_dataset
+        player_names=deduped_player_names, log_dataset=log_dataset
     )
     aggregate_player_data = []
     for player_name, logs_containing_player in log_lists.items():

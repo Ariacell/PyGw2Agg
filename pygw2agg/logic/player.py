@@ -2,6 +2,7 @@ from datetime import timedelta
 from decimal import Decimal
 from functools import reduce
 from typing import List
+import structlog
 from pygw2agg.logic.defense import (
     avg_deaths,
     avg_dmg_taken,
@@ -42,15 +43,15 @@ from pygw2agg.models.domain.individual_player_log import IndividualPlayerLogData
 
 from pygw2agg.models.ei_output.log_data import LogData, to_individual_player_log_data
 
-
-def get_player_account(player_name: str, log: LogData):
-    return next(player.account for player in log.players if player.name == player_name)
+logger = structlog.get_logger("logic_main")
 
 
-def get_player_profession(player_name: str, log: LogData):
-    return next(
-        player.profession for player in log.players if player.name == player_name
-    )
+def get_player_account(player_name: str, log: IndividualPlayerLogData):
+    return log.player.account
+
+
+def get_player_profession(player_name: str, log: IndividualPlayerLogData):
+    return log.player.profession
 
 
 #  Active time is returned in milliseconds for flexibility in calculations
@@ -123,10 +124,17 @@ def get_player_averages_stats(
 
 
 def aggregate_player_logs(player_name: str, logs: List[LogData]):
-    player_profession = get_player_profession(player_name=player_name, log=logs[0])
-    player_account = get_player_account(player_name=player_name, log=logs[0])
     simplified_player_logs: List[IndividualPlayerLogData] = list(
         map(to_individual_player_log_data(player_name=player_name), logs)
+    )
+    logger.debug(
+        f"Got {len(simplified_player_logs)} simplified Individual Log Data for player {player_name}"
+    )
+    player_account = get_player_account(
+        player_name=player_name, log=simplified_player_logs[0]
+    )
+    player_profession = get_player_profession(
+        player_name=player_name, log=simplified_player_logs[0]
     )
     player_totals_stats: List[AggregatedPlayerStat] = get_player_totals_stats(
         player_name, simplified_player_logs
