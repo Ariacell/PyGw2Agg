@@ -30,7 +30,7 @@ class ProfessionEnum(str, Enum):
     scourge = "Scourge"
     harbinger = "Harbinger"
 
-    elementalist = "elementalist"
+    elementalist = "Elementalist"
     tempest = "Tempest"
     weaver = "Weaver"
     catalyst = "Catalyst"
