@@ -3,6 +3,7 @@ from typing import List
 import structlog
 from pygw2agg.logic.player import aggregate_player_logs
 from pygw2agg.logic.utils import flatten_list
+from pygw2agg.models.aggregated.metadata import AggregateMetadata
 from pygw2agg.models.aggregated.player import AggregatedPlayer
 from pygw2agg.models.ei_output.log_data import LogData
 
@@ -77,7 +78,7 @@ def get_logs_lists_per_player(
     return res
 
 
-def aggregate_log_data(log_dataset: List[LogData]) -> List[AggregatedPlayer]:
+def aggregate_player_log_data(log_dataset: List[LogData]) -> List[AggregatedPlayer]:
     logger.info(f"Aggregating {len(log_dataset)} logs")
     deduped_player_names = get_unique_players_for_log_set(log_dataset=log_dataset)
     log_lists = get_logs_lists_per_player(
@@ -92,3 +93,7 @@ def aggregate_log_data(log_dataset: List[LogData]) -> List[AggregatedPlayer]:
             aggregate_player_logs(player_name, logs_containing_player)
         )
     return aggregate_player_data
+
+
+def get_aggregate_metadata(log_dataset: List[LogData]) -> AggregateMetadata:
+    return AggregateMetadata(start_time="3434", end_time="34234")

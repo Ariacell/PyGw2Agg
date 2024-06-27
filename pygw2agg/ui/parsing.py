@@ -1,3 +1,5 @@
+import os
+from typing import List
 from PySimpleGUI import (
     Button,
     popup_error_with_traceback,
@@ -8,9 +10,11 @@ from PySimpleGUI import (
 )
 import traceback
 import structlog
+from pygw2agg.io.generate_index import generate_index_html
 from pygw2agg.io.load_json import load_json
 from pygw2agg.io.parse import parse_zevtc_logs_to_json
-from pygw2agg.logic.main import aggregate_log_data
+from pygw2agg.logic.main import aggregate_player_log_data, get_aggregate_metadata
+from pygw2agg.models.aggregated.player import AggregatedPlayer
 from pygw2agg.settings_keys import INPUT_DIRECTORY_KEY
 from pygw2agg.ui.mapping import map_aggregated_data_to_table_structure
 
@@ -95,16 +99,31 @@ def handle_parse_event(window: Window, event, values):
         window.refresh()
 
         validated_json_data = load_json(json_log_paths)
-        aggregated_data = aggregate_log_data(validated_json_data)
+        aggregated_player_data = aggregate_player_log_data(validated_json_data)
+        aggregated_metadata = get_aggregate_metadata(validated_json_data)
         # Table data should have it's own tranformation in logic/model module, aggregation is a logic step, mapping to ui representation is a domain model responsibility imo.
-        data = map_aggregated_data_to_table_structure(aggregated_data=aggregated_data)
-        logger.debug(f"Mapped aggregated data to table structure: {data}")
-        window[TABLE_KEYS.AGGREGATE_TABLE_SUMMARY_KEY].update(values=data.summary)
-        window[TABLE_KEYS.AGGREGATE_TABLE_DEFENSE_KEY].update(values=data.defense)
-        window[TABLE_KEYS.AGGREGATE_TABLE_OFFENSE_KEY].update(values=data.offense)
-        window[TABLE_KEYS.AGGREGATE_TABLE_UTILITY_KEY].update(values=data.utility)
+        ui_table_data = map_aggregated_data_to_table_structure(
+            aggregated_data=aggregated_player_data
+        )
+        logger.debug(f"Mapped aggregated data to table structure: {ui_table_data}")
+        window[TABLE_KEYS.AGGREGATE_TABLE_SUMMARY_KEY].update(
+            values=ui_table_data.summary
+        )
+        window[TABLE_KEYS.AGGREGATE_TABLE_DEFENSE_KEY].update(
+            values=ui_table_data.defense
+        )
+        window[TABLE_KEYS.AGGREGATE_TABLE_OFFENSE_KEY].update(
+            values=ui_table_data.offense
+        )
+        window[TABLE_KEYS.AGGREGATE_TABLE_UTILITY_KEY].update(
+            values=ui_table_data.utility
+        )
         toggle_table_display(window, True)
-        return data
+        generate_index_html(
+            aggregated_metadata=aggregated_metadata,
+            aggregated_player_data=aggregate_player_log_data,
+        )
+        return ui_table_data
     except Exception as e:
         traceback.print_exc()
         popup_error_with_traceback(f"Error while attempting to aggregate logs: {e}")
